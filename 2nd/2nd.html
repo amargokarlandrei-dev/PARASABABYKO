@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Infinite Two Months</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #ff4d6d;
+            --bg-glass: rgba(255, 255, 255, 0.25);
+            --text-dark: #2d3436;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #000;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #2d0016 0%, #000000 100%);
+        }
+
+        /* Particles Layer */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- CINEMATIC INTRO --- */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .loader-heart {
+            font-size: 50px;
+            animation: beat 1s infinite;
+            filter: drop-shadow(0 0 10px var(--accent));
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* --- MAIN CONTENT --- */
+        .scroller {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1.main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin: 0;
+            background: linear-gradient(to right, #ff4d6d, #ff8fa3, #ff4d6d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* --- 3D PHOTO STACK UPGRADE --- */
+        .photo-stack {
+            position: relative;
+            width: 320px;
+            height: 420px;
+            margin: 100px 0;
+            perspective: 1000px; /* Adds depth when sliding */
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 10px solid white;
+            border-bottom: 60px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), z-index 0.6s;
+            cursor: pointer;
+            transform-origin: center;
+            user-select: none;
+        }
+
+        /* The sliding animation class */
+        .card.slide-out {
+            transform: translateX(150%) rotate(30deg) !important;
+            z-index: 200 !important;
+            opacity: 0;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none; /* Prevents image dragging issues */
+        }
+
+                /* Rotations for the pile effect */
+        .card:nth-child(1) { transform: rotate(-10deg); z-index: 6; }
+        .card:nth-child(2) { transform: rotate(5deg); z-index: 5; }
+        .card:nth-child(3) { transform: rotate(-3deg); z-index: 4; }
+        .card:nth-child(4) { transform: rotate(8deg); z-index: 3; }
+        .card:nth-child(5) { transform: rotate(-7deg); z-index: 2; }
+        .card:nth-child(6) { transform: rotate(2deg); z-index: 1; }
+
+        /* This ensures when you hover, the card comes to the very top */
+        .card:hover {
+            transform: translateY(-50px) rotate(0deg) scale(1.1) !important;
+            z-index: 100 !important;
+        }
+
+     .card::after {
+            content: attr(data-caption);
+            position: absolute;
+            bottom: 0; 
+            left: 0;
+            width: 100%;
+            height: 60px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* CHANGE THIS LINE TO RED */
+            color: #ff4d6d; 
+            
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            padding: 0 10px;
+            text-align: center;
+        }
+
+           /* --- GIFT BOX STYLES --- */
+            .gift-container { 
+            padding: 60px 0; 
+            text-align: center; 
+            position: relative; /* Add this to anchor the flowers */
+         }
+
+        .magic-box {
+            width: 120px;
+            height: 120px;
+            background: var(--accent);
+            position: relative;
+            margin: 0 auto;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .magic-box {
+    animation: box-glow 2s infinite alternate;
+}
+
+@keyframes box-glow {
+    from { box-shadow: 0 0 10px rgba(255, 77, 109, 0.3); }
+    to { box-shadow: 0 0 30px rgba(255, 77, 109, 0.8); }
+}
+
+        .magic-box::before { 
+            content: ''; position: absolute; width: 20px; height: 100%;
+            background: #ffb703; left: 50%; transform: translateX(-50%);
+        }
+
+        .box-lid {
+            position: absolute; 
+            top: -10px; left: -5px;
+            width: 130px; height: 30px; 
+            background: #ff4d6d;
+            border-radius: 5px; 
+            border-bottom: 3px solid rgba(0,0,0,0.1);
+            z-index: 5; /* Higher than flowers initially */
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: top;
+        }
+
+        .box-lid.open {
+            transform: rotateX(-120deg) translateY(-10px);
+            z-index: 1; /* Move behind flowers once open */
+        }
+
+        .magic-box:hover { transform: scale(1.05); }
+
+        /* --- THE ENVELOPE REDESIGN --- */
+        .glass-letter {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 50px 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            display: none;
+            text-align: left;
+        }
+
+        .glass-letter h2 { font-family: 'Dancing Script'; color: var(--accent); font-size: 2.5rem; }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 77, 109, 0.6); }
+
+    </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="intro-overlay">
+    <div class="loader-heart">❤️</div>
+    <h2 style="margin-top: 20px; font-weight: 200; letter-spacing: 5px;">COLLECTING MEMORIES...</h2>
+    <button class="btn-primary" onclick="reveal()" style="margin-top: 30px;">PASUKIN MO ANG PUSO KO BABY HAHAHAHAHA</button>
+</div>
+
+<div class="scroller">
+    <section class="hero-section">
+        <p style="letter-spacing: 10px; opacity: 0.7;">FIFTY-NINE DAYS OF US</p>
+        <h1 class="main-title">Happy 2nd Monthsary</h1>
+        <p style="max-width: 500px; line-height: 1.6; opacity: 0.9;">
+            Every second with you is a new favorite memory. Two months down, more months to go.
+        </p>
+    </section>
+
+  <div class="photo-stack">
+    <div class="card" data-caption="The day I realized I loved you..">
+        <img src="photo1.jpg">
+    </div>
+    <div class="card" data-caption="Your smile is my favorite view.">
+        <img src="photo2.jpg">
+    </div>
+    <div class="card" data-caption="SUPER CUTE MY BABYY.">
+        <img src="photo3.jpg">
+    </div>
+    <div class="card" data-caption="Our first dinner date! 🍝">
+        <img src="photo4.jpg">
+    </div>
+    <div class="card" data-caption="You look so handsome here.">
+        <img src="photo5.jpg">
+    </div>
+    <div class="card" data-caption="I'M MISSING THESE DAYS :(">
+        <img src="photo6.jpg">
+    </div>
+        <div class="card" data-caption="The day we both cried">
+        <img src="photo7.jpg">
+    </div>
+        <div class="card" data-caption="Sunset with you hehe">
+        <img src="photo8.jpg">
+    </div>
+        <div class="card" data-caption="Beach date??">
+        <img src="photo9.jpg">
+    </div>
+        <div class="card" data-caption="Sleeping together ehe">
+        <img src="photo10.jpg">
+    </div>
+        <div class="card" data-caption="Mall date, you kissed me sa resto">
+        <img src="photo11.jpg">
+    </div>
+</div>
+
+    <section class="gift-container">
+    <h3 style="font-family: 'Dancing Script'; font-size: 2rem;">A Piece of My Heart...</h3>
+    <div class="magic-box" id="gift-box" onclick="romanticGiftOpen(event)">
+        <div class="box-lid"></div>
+        <div id="box-surprise" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%) scale(0); transition: all 1.5s ease; z-index: 2; font-size: 3rem;">❤️</div>
+    </div>
+    <p id="gift-instruction" style="margin-top: 20px; opacity: 0.7; transition: 0.5s;">(Tap to open your gift, baby)</p>
+    <div id="hidden-note" style="opacity: 0; transition: 2s; margin-top: 20px; font-style: italic; color: var(--accent);">
+        "Every beat of my heart is a 'thank you' for being mine."
+    </div>
+</section>
+
+    <button class="btn-primary" id="readBtn" onclick="showLetter()">Click To Read My Letter</button>
+    
+    <div class="glass-letter" id="letter">
+        <h2>To My Dearest,</h2>
+        <div id="typewriter" style="line-height: 1.8; white-space: pre-wrap;"></div>
+        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+            <p><strong>I love you more than words can express. ❤️</strong></p>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Your Forever Person</p>
+        </div>
+    </div>
+
+    <audio id="music" loop>
+        <source src="YOUR_SONG_URL.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div style="height: 100px;"></div>
+</div>
+
+<script>
+
+    // --- PHOTO SHUFFLE LOGIC ---
+    document.querySelectorAll('.card').forEach((card) => {
+        card.addEventListener('click', function() {
+            const stack = document.querySelector('.photo-stack');
+            const cards = Array.from(stack.querySelectorAll('.card'));
+            
+            // Only shuffle if there is more than one card
+            if (cards.length > 1) {
+                // 1. Add sliding animation
+                this.classList.add('slide-out');
+
+                setTimeout(() => {
+                    // 2. Move the clicked card to the bottom of the HTML stack
+                    stack.prepend(this); 
+                    
+                    // 3. Remove animation class so it snaps back behind others
+                    this.classList.remove('slide-out');
+                    
+                    // 4. Update Z-Index for all cards so they stack correctly
+                    // (Top card in HTML becomes bottom in Z-index)
+                    const updatedCards = stack.querySelectorAll('.card');
+                    updatedCards.forEach((c, index) => {
+                        c.style.zIndex = index;
+                        // Optional: re-apply small random rotations for messy look
+                        const rotations = [-10, 5, -3, 8, -7, 2];
+                        c.style.transform = `rotate(${rotations[index % rotations.length]}deg)`;
+                    });
+                }, 300); // 300ms is half of the 0.6s transition
+            }
+        });
+    });
+
+    // Particle Animation
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const particles = [];
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.speedY = Math.random() * 1 - 0.5;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(255, 77, 109, 0.5)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    init(); animate();
+
+    // Reveal Site
+    function reveal() {
+    document.getElementById('intro-overlay').style.transform = 'translateY(-100%)';
+    const music = document.getElementById('music');
+    
+    music.volume = 0; // Start at zero
+    music.play();
+    
+    // Simple fade in over 2 seconds
+    let fade = setInterval(() => {
+        if (music.volume < 0.9) {
+            music.volume += 0.1;
+        } else {
+            clearInterval(fade);
+        }
+    }, 200);
+}
+
+    let explosionInterval;
+
+    function romanticGiftOpen(event) {
+    const lid = document.querySelector('.box-lid');
+    const surprise = document.getElementById('box-surprise');
+    const instruction = document.getElementById('gift-instruction');
+    const note = document.getElementById('hidden-note');
+    
+    if(lid.classList.contains('open')) return;
+
+    // 1. Open the Lid
+    lid.classList.add('open');
+    instruction.style.opacity = "0";
+
+    // 2. Make the Heart/Surprise rise out slowly
+    setTimeout(() => {
+        surprise.style.transform = "translateX(-50%) translateY(-100px) scale(1.5)";
+        surprise.style.filter = "drop-shadow(0 0 15px #ff4d6d)";
+        note.style.opacity = "1";
+    }, 500);
+
+    // 3. Create a "Fountain of Love" (Floating Hearts)
+    let heartCount = 0;
+    const heartInterval = setInterval(() => {
+        const rect = document.getElementById('gift-box').getBoundingClientRect();
+        createFloatingHeart(rect.left + rect.width / 2, rect.top);
+        heartCount++;
+        if (heartCount > 40) clearInterval(heartInterval);
+    }, 150);
+}
+
+function createFloatingHeart(x, y) {
+    const heart = document.createElement('div');
+    const shapes = ['❤️', '💖', '✨', '🌸'];
+    heart.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
+    heart.style.position = 'fixed';
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
+    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    heart.style.zIndex = '100';
+    heart.style.pointerEvents = 'none';
+    
+    document.body.appendChild(heart);
+
+    const destX = (Math.random() - 0.5) * 400; // Drift left/right
+    const destY = -window.innerHeight; // Float to the top
+
+    const anim = heart.animate([
+        { transform: 'translate(-50%, 0) scale(0)', opacity: 0 },
+        { transform: 'translate(-50%, -50px) scale(1.2)', opacity: 1, offset: 0.2 },
+        { transform: `translate(calc(-50% + ${destX}px), ${destY}px) rotate(${destX}deg)`, opacity: 0 }
+    ], {
+        duration: 5000 + Math.random() * 3000,
+        easing: 'ease-out'
+    });
+
+    anim.onfinish = () => heart.remove();
+}
+
+    // Typewriter Reassurance
+    const msg = `Hi baby, happy 2nd monthsary po 🤍
+
+Grabe, dalawang buwan na pala tayo… ang bilis pero at the same time, ang dami na nating pinagdaanan kahit sa maikling panahon pa lang. These past few days, napapansin ko kung gaano na tayo ka-okay. Mas naging calm tayo, mas nagkakaintindihan, at mas konti na yung pagtatalo natin. And honestly, sobrang saya ko dahil doon. Ang sarap sa feeling na kahit may misunderstandings tayo minsan, hindi na siya katulad dati—mas pinipili na nating ayusin, mas pinipili na nating intindihin ang isa’t isa kaysa manalo sa argument.
+
+Thank you for being here with me hanggang ngayon. Thank you for choosing to stay, even on days na hindi ako madaling mahalin. Thank you for your patience, sa pag-intindi sa mood ko, sa pakikinig sa mga kwento ko, at sa pag-aalaga sa akin sa sarili mong paraan. Thank you for loving me in ways na hindi ko akalaing mararanasan ko. You make me feel seen, heard, and valued—and that means so much to me.
+
+Na-aappreciate ko lahat ng ginagawa mo, baby. Yung efforts mo, yung time na binibigay mo sa akin, kahit busy ka, yung simpleng messages mo, yung pag-check mo kung okay ako—lahat ‘yon, hindi ko tine-take for granted. Kahit minsan hindi ko nasasabi agad, please know na I notice everything, and I’m really, really grateful for you.
+
+Alam ko naman na hindi mawawala yung tampuhan sa isang relasyon. Normal ‘yon, part ‘yon ng pagmamahal. Pero gusto kong ipaalam sa’yo na sa bawat tampuhan natin, mas lalo kitang pinipiling mahalin. Hindi ako mapapagod na piliin ka, araw-araw. Kahit may times na nahihirapan tayo, kahit may misunderstandings, I will always choose to stay, to fix things, and to grow with you.
+
+Gusto kong maging safe place mo, tulad ng pagiging safe place mo sa akin. Yung tipong kahit anong mangyari sa araw mo, alam mong may uuwian kang tao na makikinig at iintindi sa’yo—at gusto ko ako ‘yon para sa’yo. I want to support you, encourage you, and stand beside you in everything that you go through.
+
+Baby, this relationship is not just something temporary for me. Hindi lang ito “for now” or “for fun.” Ikaw yung gusto kong makasama habang tumatagal, habang naggo-grow tayo, habang inaabot natin yung mga pangarap natin. I see a future with you, and I’m willing to take that journey with you step by step, no matter how long it takes.
+
+I want to reassure you that I will love you no matter what happens. Kahit anong pagsubok pa yung dumating sa atin, kahit may mga araw na mahirap, hindi ako susuko sa’yo. Hindi ako aatras. This is a lifetime kind of love for me—walang iwanan, walang bibitaw. Ikaw na ‘to eh.
+
+Never back down, never what? char HAHAHAHAHA 😭 pero totoo, wala na ‘to, ikaw na talaga.
+
+ Thank you for being you, and thank you for being mine. Happy 2nd monthsary ulit 🤍`;
+
+    let charIdx = 0;
+    function typeWriter() {
+        if (charIdx < msg.length) {
+            document.getElementById("typewriter").innerHTML += msg.charAt(charIdx);
+            charIdx++;
+            setTimeout(typeWriter, 50);
+        }
+    }
+
+    function showLetter() {
+        document.getElementById('readBtn').style.display = 'none';
+        document.getElementById('letter').style.display = 'block';
+        typeWriter();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
